@@ -124,7 +124,7 @@ const AdminHome = ()  => {
                   <td>{student.statusCode}</td>
                   <td>{student.status}</td>
                   <td><UpdateStudent student={student} updateStudent={updateStudent} /></td>
-                  <td><button type="button" margin="auto" onClick={() => deleteStudent(student.student_id)}>Delete</button></td>
+                  <td><button id="delete" type="button" margin="auto" onClick={() => deleteStudent(student.student_id)}>Delete</button></td>
                 </tr>
               ))}
             </tbody>
