@@ -14,6 +14,8 @@ function AddStudent(props) {
       email: '',
       statusCode: 0,
       status: '',
+      password: '',
+      role: '',
     });
 
     const handleClickOpen = () => {
@@ -50,6 +52,8 @@ function AddStudent(props) {
                 <TextField id="email" fullWidth label="Email" name="email" value={student.email} onChange={handleChange}  />
                 <TextField id="statusCode" fullWidth label="Status Code" name="statusCode" value={student.statusCode} onChange={handleChange}  />
                 <TextField id="status" fullWidth label="Status" name="status" value={student.status} onChange={handleChange}  />
+                <TextField id="password" fullWidth label="Password" name="password" value={student.password} onChange={handleChange}  />
+                <TextField id="role" fullWidth label="Role" name="role" value={student.role} onChange={handleChange}  />
             </DialogContent>
             <DialogActions>
               <Button color="secondary" onClick={handleClose}>Cancel</Button>

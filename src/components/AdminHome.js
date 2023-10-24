@@ -9,6 +9,8 @@ const AdminHome = ()  => {
   const [message, setMessage] = useState(' ');  // status message
   const [students, setStudents] = useState([]);
 
+  const token = sessionStorage.getItem("jwt");
+
   useEffect(() => {
     // called once after intial render
     fetchStudents();
@@ -17,7 +19,7 @@ const AdminHome = ()  => {
 
   const fetchStudents = () => {
 		//TODO complete this method to fetch students and display list of students
-    fetch('http://localhost:8080/students')
+    fetch('http://localhost:8080/students', {headers: {'Authorization' : token}})
       .then(response => response.json()) 
       .then(data => {
         // sets list of students
@@ -33,7 +35,7 @@ const AdminHome = ()  => {
     
     fetch('http://localhost:8080/student',{ 
       method: 'POST',
-      headers: {  'Content-Type': 'application/json', }, 
+      headers: {  'Authorization' : token, 'Content-Type': 'application/json', }, 
       body: JSON.stringify(newStudent)
     })
       .then(res => {
@@ -58,7 +60,7 @@ const AdminHome = ()  => {
     
     fetch(`http://localhost:8080/student/${editedStudent.student_id}`,{ 
       method: 'PUT',
-      headers: {  'Content-Type': 'application/json', }, 
+      headers: {  'Authorization' : token, 'Content-Type': 'application/json', }, 
       body: JSON.stringify(editedStudent)
     })
       .then(res => {
@@ -82,9 +84,7 @@ const AdminHome = ()  => {
     setMessage('');
     console.log('start deleteStudent', studentId);
     
-    fetch(`http://localhost:8080/student/${studentId}`, {
-      method: 'DELETE',
-    })
+    fetch(`http://localhost:8080/student/${studentId}`, {method: 'DELETE', headers: {'Authorization' : token}})
     .then(res => {
       if (res.ok) {
         console.log("delete ok");

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import {BrowserRouter,  Link } from 'react-router-dom';
 import {SEMESTERS} from '../constants'
 
   /* 
@@ -36,7 +36,7 @@ function StudentHome( ) {
           ))}
         </tbody>
       </table>
-      <Link id="viewSchedule" to={`/schedule?termId=${termId}`} > View Schedule </Link>
+        <Link id="viewSchedule" to={`/schedule?termId=${termId}`} > View Schedule </Link>
     </div>
   );
 }
