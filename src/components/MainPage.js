@@ -49,11 +49,7 @@ function MainPage() {
                     </td>
                     <td>
                       <input
-                        type="text"
-                        name="username"
-                        value={user.username}
-                        onChange={onChange}
-                        placeholder="username"
+                        type="text" name="username" value={user.username} onChange={onChange} required placeholder="username" 
                       />
                     </td>
                   </tr>
@@ -63,20 +59,15 @@ function MainPage() {
                     </td>
                     <td>
                       <input
-                        type="password"
-                        name="password"
-                        value={user.password}
-                        onChange={onChange}
-                        placeholder="password"
+                        type="password" name="password" value={user.password} onChange={onChange} required placeholder="password" 
                       />
                     </td>
                   </tr>
                 </tbody>
               </table>
               <br />
-              <button type="submit" id="submit">
-                Login
-              </button>
+              
+             <button> <Link to="/Users" className="user-btn">Login</Link></button>
             </div>
           </form>
           <p>

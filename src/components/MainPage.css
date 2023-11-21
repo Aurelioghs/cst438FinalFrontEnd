@@ -71,3 +71,11 @@ input[type="password"] {
     width: 80%; 
   }
 }
+
+.container{
+  max-width: 100%;
+}
+.user-btn{
+  color: white;
+  font-weight:50px;
+}

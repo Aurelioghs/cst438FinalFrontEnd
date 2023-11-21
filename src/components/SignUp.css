@@ -48,7 +48,6 @@ body {
     border: none;
     border-radius: 3px;
     cursor: pointer;
-    /* Add margin to the top to create space between input fields and button */
     margin-top: 20px;
   }
   

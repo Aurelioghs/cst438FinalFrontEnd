@@ -4,12 +4,12 @@ import './SignUp.css';
 
 function Signup() {
   const [user, setUser] = useState({
-    username: '',
+    name: '',
     email: '',
     password: '',
     city: '',
-    stateCode: '',
-    countryCode: ''
+    statecode: '',
+    countrycode: ''
   });
   const [signupMessage, setSignupMessage] = useState('');
 
@@ -19,7 +19,8 @@ function Signup() {
 
   const signup = (event) => {
     event.preventDefault();
-
+      console.log(JSON.stringify(user));
+      console.log(user);
     fetch('http://localhost:8080/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -47,7 +48,7 @@ function Signup() {
         <form id="signup" onSubmit={signup}>
           <div class="formgroup">
             <label id="username">Username</label>
-            <input type="text" id="username" name="username" value={user.username} onChange={onChange} required />
+            <input type="text" id="name" name="name" value={user.name} onChange={onChange} required />
           </div>
           <div class="form-group">
             <label id="email">Email</label>
@@ -62,12 +63,12 @@ function Signup() {
             <input type="text" id="city" name="city" value={user.city} onChange={onChange} />
           </div>
           <div className="form-group">
-            <label htmlFor="stateCode">State Code</label>
-            <input type="text" id="stateCode" name="stateCode" value={user.stateCode} onChange={onChange} />
+            <label htmlFor="statecode">State Code</label>
+            <input type="text" id="statecode" name="statecode" value={user.statecode} onChange={onChange} />
           </div>
           <div className="form-group">
-            <label htmlFor="countryCode">Country Code</label>
-            <input type="text" id="countryCode" name="countryCode" value={user.countryCode} onChange={onChange} />
+            <label htmlFor="countrycode">Country Code</label>
+            <input type="text" id="countrycode" name="countrycode" value={user.countrycode} onChange={onChange} />
           </div>
           <button type="submit">Create</button>
           <Link to="/" className="back-link">Go Back</Link>
