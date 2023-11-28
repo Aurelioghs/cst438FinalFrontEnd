@@ -1,0 +1,85 @@
+/* userView.css */
+
+/* Styles for the main container */
+.main-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* Styles for the headings */
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  h2 {
+    margin-bottom: 10px;
+  }
+  
+  /* Styles for sections */
+  section {
+    margin-bottom: 20px;
+  }
+  
+  /* Styles for search box and button */
+  #cityInput {
+    width: 200px;
+    padding: 8px;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  #searchButton {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+  
+  #searchButton:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Styles for the table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  table th,
+  table td {
+    padding: 8px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  table th {
+    background-color: #f2f2f2;
+  }
+  
+  /* Styles for the table headings */
+  thead th {
+    background-color: #f2f2f2;
+  }
+  
+  /* Styles for alternating rows in the table */
+  tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  /* Styles for table responsiveness on small screens */
+  @media screen and (max-width: 600px) {
+    table {
+      overflow-x: auto;
+      display: block;
+    }
+  }
+  

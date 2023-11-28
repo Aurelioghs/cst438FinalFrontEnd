@@ -1,0 +1,81 @@
+.main-page {
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* Header Styles */
+header h1 {
+  font-size: 36px;
+  margin-bottom: 30px;
+}
+
+.signup-section {
+  width: 300px;
+  margin: 50px auto; 
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.signup-section h2 {
+  margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.signin-link {
+  font-size: 12px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.signin-link:hover {
+  text-decoration: underline;
+}
+.signin-btn {
+  display: inline-block;
+  padding: 10px 40px;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+}
+
+.signin-btn:hover {
+  background-color: #0056b3;
+}
+
+
+.image-container {
+  display: flex;
+  justify-content: space-between;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+}
+@media (max-width: 768px) {
+  .signup-section {
+    width: 80%; 
+  }
+}
+
+.container{
+  max-width: 100%;
+}
+.user-btn{
+  color: white;
+  font-weight:50px;
+}
