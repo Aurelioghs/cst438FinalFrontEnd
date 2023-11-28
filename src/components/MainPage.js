@@ -1,34 +1,53 @@
-import React, { useState } from 'react';
+
 import './MainPage.css';
+import React, { useState, useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+
 
 function MainPage() {
   const [user, setUser] = useState({ username: '', password: '' });
   const [isAuthenticated, setAuth] = useState(false);
+  const [redirect, setRedirect] = useState(false);
 
   const onChange = (event) => {
     setUser({ ...user, [event.target.name]: event.target.value });
   };
 
-  const login = () => {
-    fetch('http://localhost:8080/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(user),
-    })
-      .then((res) => {
-        const jwtToken = res.headers.get('Authorization');
-        if (jwtToken !== null) {
+  const login = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch('http://localhost:8080/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user),
+      });
+
+      if (response.ok) {
+        const jwtToken = await response.text(); // Get the token from the response body
+        if (jwtToken) {
+          console.log("Token received:", jwtToken);
           sessionStorage.setItem('jwt', jwtToken);
           setAuth(true);
+        } else {
+          console.log("Token not received");
         }
-      })
-      .catch((err) => console.log(err));
+      } else {
+        console.log('Login failed');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
-  // Redirect to CurrentWeather component if authenticated
-  if (isAuthenticated) {
-    return <Redirect to="/CurrentWeather" />;
+  useEffect(() => {
+    if (isAuthenticated) {
+      setRedirect(true);
+    }
+  }, [isAuthenticated]);
+
+  if (redirect) {
+    return <Redirect to="/userView" />;
   }
 
   return (
@@ -49,7 +68,11 @@ function MainPage() {
                     </td>
                     <td>
                       <input
-                        type="text" name="username" value={user.username} onChange={onChange} required placeholder="username" 
+                        type="text"
+                        name="username"
+                        value={user.username}
+                        onChange={onChange}
+                        placeholder="username"
                       />
                     </td>
                   </tr>
@@ -59,15 +82,19 @@ function MainPage() {
                     </td>
                     <td>
                       <input
-                        type="password" name="password" value={user.password} onChange={onChange} required placeholder="password" 
+                        type="password"
+                        name="password"
+                        value={user.password}
+                        onChange={onChange}
+                        placeholder="password"
                       />
                     </td>
                   </tr>
                 </tbody>
               </table>
               <br />
-              
-             <button> <Link to="/Users" className="user-btn">Login</Link></button>
+              <button type="submit" id="submit">Login</button>
+            <Link to="/userView" className="user-btn"></Link>
             </div>
           </form>
           <p>
