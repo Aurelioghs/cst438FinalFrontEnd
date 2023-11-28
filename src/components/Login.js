@@ -1,18 +1,20 @@
 import React, {useState} from 'react';
 import AdminHome from './AdminHome';
 import StudentHome from './StudentHome';
+import Signup from './Signup';
 
 function Login() {
     const[user, setUser] = useState({username:'', password:''});
     const[isAuthenticated, setAuth] = useState(false);
-    const [userRole, setUserRole] = useState('');
-    const [student, setStudent] = useState({
+    const [message, setMessage] = useState(' ');  // status message
+    const [userRole, setUserRole] = useState({
         name: '',
         email: '',
         password: '',
         role: '',
-        status: '',
-        statusCode: 0,
+        city: '',
+        state_code: '',
+        country_code: '',
     });
     
 
@@ -43,46 +45,71 @@ function Login() {
                 claims = JSON.parse(payloadJSON);
                 // console.log('Claims:', claims.sub);
             }
-            fetch(`http://localhost:8080/student/${claims.sub}`, {headers: {'Authorization' : sessionStorage.getItem("jwt")}})
+            fetch(`http://localhost:8080/user/${claims.sub}`, {headers: {'Authorization' : sessionStorage.getItem("jwt")}})
                 .then(response => response.json()) 
                 .then(data => {
                     // set student based on email
-                    setStudent(data);
+                    setUserRole(data);
                 })
             .catch(err => console.log(err));
         })
         .catch(err => console.log(err));
-
-        
+    }
+    // add user
+    const  signup = (newUser) => {
+        setMessage('');
+        console.log("start signup"); 
+        console.log(newUser);
+        fetch('http://localhost:8080/user',{ 
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'}, 
+        body: JSON.stringify(newUser)
+        })
+        .then(res => {
+            if (res.ok) {
+            console.log("signup ok");
+            setMessage("User signed up.");
+            } else {
+            console.log('error signup ' + res.status);
+            setMessage("Error. "+res.status);
+            }})
+        .catch(err => {
+            console.error("exception signup "+ err);
+            setMessage("Exception. "+err);
+        })
     }
 
     if (isAuthenticated) {
-        if (student.role === 'ADMIN') {
-            return <AdminHome />;
+        if (userRole.role === 'ADMIN') {
+            // return <AdminHome />;
+            console.log("Admin");
         } else {
-            return <StudentHome />;
+            // return <StudentHome />;
+            console.log("User");
         }
     } else {
         return (
             <div className="App">
-            <table>
-            <tbody>
-            <tr><td>
-            <label htmlFor="username">UserName</label>
-            </td><td>
-            <input type="text" name="username" value={user.username} onChange={onChange} />
-            </td></tr>
-            <tr><td>
-            <label htmlFor="password">Password</label>
-            </td><td>
-            <input type="text" name="password" value={user.password} onChange={onChange} />
-            </td></tr>
-            </tbody>
-            </table>
+                <h4>{message}</h4>
+                <table>
+                <tbody>
+                <tr><td>
+                <label htmlFor="username">UserName</label>
+                </td><td>
+                <input type="text" name="username" value={user.username} onChange={onChange} />
+                </td></tr>
+                <tr><td>
+                <label htmlFor="password">Password</label>
+                </td><td>
+                <input type="text" name="password" value={user.password} onChange={onChange} />
+                </td></tr>
+                </tbody>
+                </table>
             
             <br/>
-            <button id="submit" onClick={login}>Login</button>
-                </div>
+                <button id="submit" onClick={login}>Login</button>
+                <Signup signup={signup} />
+            </div>
         );
     }
 }
