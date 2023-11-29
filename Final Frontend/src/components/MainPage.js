@@ -24,7 +24,8 @@ function MainPage() {
       });
 
       if (response.ok) {
-        const jwtToken = await response.text(); // Get the token from the response body
+       // const jwtToken = await response.text(); // Get the token from the response body
+        const jwtToken = response.headers.get('Authorization');
         if (jwtToken) {
           console.log("Token received:", jwtToken);
           sessionStorage.setItem('jwt', jwtToken);

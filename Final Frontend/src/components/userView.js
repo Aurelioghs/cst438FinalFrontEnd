@@ -15,7 +15,7 @@ function UserView() {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+         'Authorization' : token
       },
     })
       .then(response => {
@@ -109,14 +109,15 @@ function UserView() {
       <button>Settings</button>
     </div>
       {/* Section for viewing current weather */}
-      <section className="current-weather">
-        <h2>Weather At *Insert user's city</h2>
-          Temperature:{}<br></br>
-          Description:{}<br></br>
-          Wind Speed:{}<br></br>
-        {/* Display current weather details here */}
-       </section>
-
+  {userWeather !== null ? (
+    <section className="current-weather">
+    <h2>Weather At {userWeather.cityName}</h2>
+    Temperature: {userWeather.tempC}<br></br>
+    Description: {userWeather.desc}<br></br>
+    Wind Speed: {userWeather.windSpeed}<br></br>
+    {/* Display other current weather details here */}
+    </section>) : (<p>Loading...</p> )}
+    
       {/* Search bar*/}
       <section className="search-section">
         <h2>Search Weather</h2>
