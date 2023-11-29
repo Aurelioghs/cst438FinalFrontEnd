@@ -15,7 +15,7 @@ function UserView() {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`, // Include the Authorization header
+        'Authorization': `Bearer ${token}`,
       },
     })
       .then(response => {
@@ -104,12 +104,16 @@ function UserView() {
 
   return (
     <div className="main-page">
+    <div className="header-container">
       <h1>User View Weather</h1>
-
+      <button>Settings</button>
+    </div>
       {/* Section for viewing current weather */}
       <section className="current-weather">
-        <h2>Current Weather</h2>
-
+        <h2>Weather At *Insert user's city</h2>
+          Temperature:{}<br></br>
+          Description:{}<br></br>
+          Wind Speed:{}<br></br>
         {/* Display current weather details here */}
        </section>
 
@@ -122,27 +126,31 @@ function UserView() {
 
       {/* displaying weather of multiple cities */}
       <section className="cities-weather">
-        <h2>Weather for Multiple Cities</h2>
-        <table id="citiesTable">
-          <thead>
-            <tr>
-              <th>City</th>
-                
-              <th>Temperature</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/*
-              <tr>
-                <td>New York</td>
-                <td>25°C</td>
-                <td>Partly Cloudy</td>
-              </tr>
-            */}
-          </tbody>
-        </table>
-      </section>
+      <div className="header-container">
+        <h2>Weathers around the World</h2> <button>Add City</button></div>
+        {citiesWeather !== null ? (
+    <table id="citiesTable">
+      <thead>
+        <tr>
+          <th>City</th>
+          <th>Temperature</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {citiesWeather.map((city, idx) => (
+          <tr key={idx}>
+            <td>{city.cityName}</td>
+            <td>{city.tempC}°C</td>
+            <td>{city.desc}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p>Loading cities weather...</p>
+  )}
+</section>
     </div>
   );
 }

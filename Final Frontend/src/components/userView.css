@@ -12,9 +12,17 @@
   }
   
   /* Styles for the headings */
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Additional styling if needed */
+ 
   h1 {
-    text-align: center;
-    margin-bottom: 20px;
+  
+    margin-bottom: 10px;
   }
   
   h2 {
