@@ -117,7 +117,7 @@ function UserView() {
     Wind Speed: {userWeather.windSpeed}<br></br>
     {/* Display other current weather details here */}
     </section>) : (<p>Loading...</p> )}
-    
+
       {/* Search bar*/}
       <section className="search-section">
         <h2>Search Weather</h2>
@@ -136,6 +136,7 @@ function UserView() {
           <th>City</th>
           <th>Temperature</th>
           <th>Description</th>
+          <th>Wind Speed</th>
         </tr>
       </thead>
       <tbody>
@@ -144,6 +145,7 @@ function UserView() {
             <td>{city.cityName}</td>
             <td>{city.tempC}°C</td>
             <td>{city.desc}</td>
+            <td>{city.windSpeed}</td>
           </tr>
         ))}
       </tbody>
