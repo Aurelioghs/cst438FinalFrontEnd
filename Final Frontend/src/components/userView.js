@@ -7,6 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import MoreInfo from './MoreInfo';
 
 function UserView() {
   const [userWeather, setUserWeather] = useState(null);
@@ -17,6 +18,7 @@ function UserView() {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [city, setCityName] = useState('');
   const [country_code, setCountryCode] = useState('');
+  const [failedSearch,setFailedSearch] = useState('');
 
   const handleCityNameChange = (event) => {
     setCityName(event.target.value);
@@ -26,13 +28,22 @@ function UserView() {
     setCountryCode(event.target.value);
   };
   
-    const open = () => {
-      setDialogOpen(true);
-    };
+  const open = () => {
+    setDialogOpen(true);
+  };
   
-    const handleCloseDialog = () => {
-      setDialogOpen(false);
-    };
+  
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+  const handleTemp = () => {
+    setCelsius(true);
+  }
+
+  const handleCloseSearch = () => {
+    setSearchWeather(null);
+  }
 
 
   function addCity(){
@@ -118,10 +129,15 @@ function UserView() {
         .then(weatherData => {
           setSearchWeather(weatherData);
           console.log("WEATHERSEARCHED:",weatherData)
+         
          //console.log("SEARCH RESULTS:",searchedWeather)
         })
         .catch(error => {
           console.error("Error fetching weather data:", error);
+          setFailedSearch("Couldn't find results");
+          setTimeout(() => {
+            setFailedSearch(null);
+          }, 4000);
         });
     }
     
@@ -164,6 +180,7 @@ function UserView() {
    getUserWeather();
    }, []); 
 
+
  
 
   return (
@@ -189,6 +206,17 @@ function UserView() {
         <button onClick={searchCity}> Search</button>
       </section>
 
+      {failedSearch !==null ? <p>{failedSearch}</p> : <p></p> }
+
+       {searchedWeather ==null ? (<p></p>) : (
+       <p> <h2>Weather At {searchedWeather.cityName}</h2><br></br>
+        Temperature: {useCelsius ? `${searchedWeather.tempC}°C` : `${searchedWeather.tempF}°F`}<br></br>
+        Description: {searchedWeather.desc}<br></br>
+        Wind Speed: {searchedWeather.windSpeed}<br></br>
+        <button id="moreinfoBtn"  style={{ marginRight: '10px' }}> More Info</button>
+        <button id="closeSearch" onClick={handleCloseSearch}>Close Results</button>
+       </p>) }
+      
       {/* displaying weather of multiple cities */}
       <section className="cities-weather">
       <div className="header-container">
@@ -214,6 +242,7 @@ function UserView() {
           <th>Temperature</th>
           <th>Description</th>
           <th>Wind Speed</th>
+          <th>More Info</th>
         </tr>
       </thead>
       <tbody>
@@ -225,6 +254,7 @@ function UserView() {
             </td>
             <td>{city.desc}</td>
             <td>{city.windSpeed}</td>
+            <td><button id="moreinfoBtn"> More Info</button></td>  {/* Click to render new page/component for more info */}
           </tr>
         ))}
       </tbody>
