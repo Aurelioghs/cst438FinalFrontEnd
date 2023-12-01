@@ -8,17 +8,20 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import MoreInfo from './MoreInfo';
+import Settings from './Settings';
 
 function UserView() {
   const [userWeather, setUserWeather] = useState(null);
   const [searchedWeather, setSearchWeather] = useState(null);
   const [citiesWeather, setCities] = useState(null);
-  const [useCelsius,setCelsius] = useState(false);
+  const initialTempUnit = localStorage.getItem('tempUnit') || 'F';
+  const [tempUnit, setUnit] = useState(initialTempUnit);
   const token = sessionStorage.getItem("jwt");
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [city, setCityName] = useState('');
   const [country_code, setCountryCode] = useState('');
   const [failedSearch,setFailedSearch] = useState('');
+  const [openSettings, setOpenSetting] = useState(false)
 
   const handleCityNameChange = (event) => {
     setCityName(event.target.value);
@@ -37,13 +40,25 @@ function UserView() {
     setDialogOpen(false);
   };
 
-  const handleTemp = () => {
-    setCelsius(true);
+  const handleTemp = (tempUnit) => {
+    alert(tempUnit);
+    setUnit(tempUnit);
+    localStorage.setItem('tempUnit', tempUnit);
   }
 
   const handleCloseSearch = () => {
     setSearchWeather(null);
   }
+
+  const handleOpenSettings= () => {
+    setOpenSetting(true);
+  }
+
+  const handleCloseSettings= () => {
+    //alert("CLOSING SETTINGS");
+    setOpenSetting(false);
+  }
+
 
 
   function addCity(){
@@ -180,24 +195,26 @@ function UserView() {
    getUserWeather();
    }, []); 
 
-
- 
-
   return (
     <div className="main-page">
     <div className="header-container">
       <h1>User View Weather</h1>
-      <button>Settings</button>
+      <button onClick={handleOpenSettings}>Settings</button>
     </div>
+    {openSettings === true ? <Settings handleCloseSettings={handleCloseSettings}
+                                        handleTemp={handleTemp}/> : <p></p>}
+
+   
       {/* Section for viewing current weather */}
       {userWeather !== null ? (
     <section className="current-weather">
     <h2>Weather At {userWeather.cityName}</h2>
-    Temperature: {useCelsius ? `${userWeather.tempC}°C` : `${userWeather.tempF}°F`}<br></br>
+    Temperature: {tempUnit==='C' ? `${userWeather.tempC}°C` : `${userWeather.tempF}°F`}<br></br>
     Description: {userWeather.desc}<br></br>
     Wind Speed: {userWeather.windSpeed}<br></br>
     {/* Display other current weather details here */}
     </section>) : (<p>Loading...</p> )}
+ 
 
       {/* Search bar*/}
       <section className="search-section">
@@ -210,7 +227,7 @@ function UserView() {
 
        {searchedWeather ==null ? (<p></p>) : (
        <p> <h2>Weather At {searchedWeather.cityName}</h2><br></br>
-        Temperature: {useCelsius ? `${searchedWeather.tempC}°C` : `${searchedWeather.tempF}°F`}<br></br>
+        Temperature: {tempUnit==='C' ? `${searchedWeather.tempC}°C` : `${searchedWeather.tempF}°F`}<br></br>
         Description: {searchedWeather.desc}<br></br>
         Wind Speed: {searchedWeather.windSpeed}<br></br>
         <button id="moreinfoBtn"  style={{ marginRight: '10px' }}> More Info</button>
@@ -230,7 +247,7 @@ function UserView() {
 
             <DialogActions>
               <Button color="secondary" onClick={handleCloseDialog}>Cancel</Button>
-              <Button id = "addStudentBtn"color="secondary" onClick={addCity}>Add City</Button>
+              <Button id = "addCityBtn"color="secondary" onClick={addCity}>Add City</Button>
             </DialogActions>
           </Dialog>      
 
@@ -250,7 +267,7 @@ function UserView() {
           <tr key={idx}>
             <td>{city.cityName}</td>
             <td>
-              {useCelsius ? `${city.tempC}°C` : `${city.tempF}°F`}
+              {tempUnit==='C' ? `${city.tempC}°C` : `${city.tempF}°F`}
             </td>
             <td>{city.desc}</td>
             <td>{city.windSpeed}</td>
