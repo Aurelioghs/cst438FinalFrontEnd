@@ -11,8 +11,71 @@ import TextField from '@mui/material/TextField';
   {/* Render component as a dialog/modal, or make a new page for it?*/}
   function Settings(props) {
     const [isDialogOpen, setDialogOpen] = useState(true);
-    const [tempUnit, setTempUnit] = useState(props.tempUnit); // Assuming you pass the current tempUnit as a prop
+    const [tempUnit, setTempUnit] = useState(props.tempUnit);
+    const [speedUnit, setSpeedUnit] = useState(props.speedUnit);
+    const token = sessionStorage.getItem("jwt");
+    const role =  sessionStorage.getItem("role");
+    const [user, setUser] = useState({
+      city: '',
+      statecode: '',
+      countrycode: ''
+    });
   
+  function getUser(){
+    alert("GETTING USER");
+    fetch(`http://localhost:8080/getuser`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization' : token
+      },
+    })
+      .then(response => {
+        if (response.ok) {
+           return response.json();
+        }
+        else{
+        throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+      })
+      .then(data => {
+        console.log("USER:", data);
+        setUser(data);
+      })
+      .catch(error => {
+        console.error("Error fetching User", error);
+      });
+  }
+
+  function updateUserAddr(){
+   // alert("GETTING USER");
+    fetch(`http://localhost:8080/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization' : token
+      },
+    })
+      .then(response => {
+        if (response.ok) {
+           return response.json();
+        }
+        else{
+        throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+      })
+      .then(data => {
+        console.log("USER:", data);
+        setUser(data);
+      })
+      .catch(error => {
+        console.error("Error updating User address", error);
+      });
+  }
+
+  const onChange = (event) => {
+    setUser({ ...user, [event.target.name]: event.target.value });
+  };
     const handleCloseDialog = () => {
       props.handleCloseSettings();
     };
@@ -20,12 +83,22 @@ import TextField from '@mui/material/TextField';
     const handleTemp = (tempUnit) => {
       setTempUnit(tempUnit);
     };
+
+    const handleSpeed= (speedUnit) => {
+      setSpeedUnit(speedUnit);
+    };
   
     const handleUpdateSettings = () => {
-
+      updateUserAddr();
       props.handleTemp(tempUnit);
+      props.handleSpeed(speedUnit);
       handleCloseDialog();
     };
+
+    useEffect(() => {
+      getUser();
+     }, []); 
+  
   
     return (
       <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
@@ -51,12 +124,45 @@ import TextField from '@mui/material/TextField';
               onChange={() => handleTemp('C')}
             />
             Celsius
+          </label><br></br>
+          Choose Default Wind Speed
+          <label>
+            <input
+              type="radio"
+              name="speedUnit"
+              value="M"
+              checked={speedUnit === 'M'}
+              onChange={() => handleSpeed('M')}
+            />  MPH
+            <br></br>
+          
           </label>
-          Update Address
-          <TextField className="dialog-input" label="Name of city" cityName="name" onChange={handleCloseDialog} />
+          <label>
+            <input
+              type="radio"
+              name="speedUnit"
+              value="K"
+              checked={speedUnit === 'K'}
+              onChange={() => handleSpeed('K')}
+            />
+            KPH
+          </label>
           <br></br>
-          <TextField className="dialog-input" label="Country Code" countryCode="code" onChange={handleCloseDialog} />
-          <br></br>
+          Update Address<br></br><br></br>
+
+          <div className="form-group">
+            <label htmlFor="city">City</label>
+            <input type="text" id="city" name="city" value={user.city} onChange={onChange} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="statecode">State Code</label>
+            <input type="text" id="statecode" name="stateCode" value={user.stateCode} onChange={onChange} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="countrycode">Country Code</label>
+            <input type="text" id="countrycode" name="countryCode" value={user.countryCode} onChange={onChange} />
+          </div>
+         
         </DialogContent>
   
         <DialogActions>
