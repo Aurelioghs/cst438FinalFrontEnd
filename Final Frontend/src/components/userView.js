@@ -17,11 +17,22 @@ function UserView() {
   const initialTempUnit = localStorage.getItem('tempUnit') || 'F';
   const [tempUnit, setUnit] = useState(initialTempUnit);
   const token = sessionStorage.getItem("jwt");
+  const role =  sessionStorage.getItem("role");
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [city, setCityName] = useState('');
   const [country_code, setCountryCode] = useState('');
   const [failedSearch,setFailedSearch] = useState('');
   const [openSettings, setOpenSetting] = useState(false)
+  const [moreInfo, setDisplayMoreInfo] = useState(false);
+  const [infoData, setMoreInfoData] = useState(null);
+  const [cityMsg, setMsg] = useState(null);
+
+  const handlemoreInfoBtn = (data) => {
+    //console.log(data.desc);
+    setMoreInfoData(data);
+    //console.log(infoData);
+    setDisplayMoreInfo(true);
+    }
 
   const handleCityNameChange = (event) => {
     setCityName(event.target.value);
@@ -59,6 +70,11 @@ function UserView() {
     setOpenSetting(false);
   }
 
+  const handleCloseInfoDisplay = () =>{
+    setMoreInfoData(null);
+    setDisplayMoreInfo(false);
+  }
+
 
 
   function addCity(){
@@ -81,8 +97,16 @@ function UserView() {
     })
       .then(response => {
         if (response.ok) {
+          getWeathers();
+          setMsg(null);
           handleCloseDialog();
            return response.json();
+        }
+        else if(response.status === 400){
+          setMsg("City already exists in the table");
+          setTimeout(() => {
+            setMsg(null);
+          }, 3000);
         }
         else{
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -97,6 +121,7 @@ function UserView() {
   }
 
   function getUserWeather(){
+    alert(role);
    // console.log("INSIDE USERWEATHER");
     console.log("TOKEN: ",token);
     if (token!= null){
@@ -212,6 +237,7 @@ function UserView() {
     Temperature: {tempUnit==='C' ? `${userWeather.tempC}°C` : `${userWeather.tempF}°F`}<br></br>
     Description: {userWeather.desc}<br></br>
     Wind Speed: {userWeather.windSpeed}<br></br>
+    <button id="moreinfoTable"  onClick={() => handlemoreInfoBtn(userWeather)}> More Info</button>
     {/* Display other current weather details here */}
     </section>) : (<p>Loading...</p> )}
  
@@ -230,7 +256,7 @@ function UserView() {
         Temperature: {tempUnit==='C' ? `${searchedWeather.tempC}°C` : `${searchedWeather.tempF}°F`}<br></br>
         Description: {searchedWeather.desc}<br></br>
         Wind Speed: {searchedWeather.windSpeed}<br></br>
-        <button id="moreinfoBtn"  style={{ marginRight: '10px' }}> More Info</button>
+        <button id="moreInfoSearch" onClick={() => handlemoreInfoBtn(searchedWeather)}style={{ marginRight: '10px' }}> More Info</button>
         <button id="closeSearch" onClick={handleCloseSearch}>Close Results</button>
        </p>) }
       
@@ -239,7 +265,7 @@ function UserView() {
       <div className="header-container">
         <h2>Weathers around the World</h2>  <button onClick={open}> Add City</button></div>
         <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
-            <DialogTitle style={{ textAlign:'center'}}>Add student</DialogTitle>
+            <DialogTitle style={{ textAlign:'center'}}>Add City To View</DialogTitle>
             <DialogContent id="content" >
             <TextField className="dialog-input" label="Name of city" cityName="name" onChange={handleCityNameChange}  /><br></br> 
             <TextField className="dialog-input" label="Country Code" countryCode="code" onChange={handleCountryCodeChange}  /><br></br> 
@@ -248,8 +274,12 @@ function UserView() {
             <DialogActions>
               <Button color="secondary" onClick={handleCloseDialog}>Cancel</Button>
               <Button id = "addCityBtn"color="secondary" onClick={addCity}>Add City</Button>
+              {cityMsg === null ? null : <><br></br> {cityMsg} </>}
             </DialogActions>
           </Dialog>      
+
+      {moreInfo === true && infoData !==null ? <MoreInfo data={infoData} tempUnit={tempUnit}
+                                                handleCloseInfoDisplay ={handleCloseInfoDisplay}/> : <p></p>}
 
         {citiesWeather !== null ? (
     <table id="citiesTable">
@@ -271,7 +301,7 @@ function UserView() {
             </td>
             <td>{city.desc}</td>
             <td>{city.windSpeed}</td>
-            <td><button id="moreinfoBtn"> More Info</button></td>  {/* Click to render new page/component for more info */}
+            <td><button id="moreinfoTable"  onClick={() => handlemoreInfoBtn(city)}> More Info</button></td>  {/* Click to render new page/component for more info */}
           </tr>
         ))}
       </tbody>

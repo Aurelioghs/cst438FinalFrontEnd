@@ -8,6 +8,7 @@ function MainPage() {
   const [user, setUser] = useState({ username: '', password: '' });
   const [isAuthenticated, setAuth] = useState(false);
   const [redirect, setRedirect] = useState(false);
+  const [role, setRole] = useState('USER');
 
   const onChange = (event) => {
     setUser({ ...user, [event.target.name]: event.target.value });
@@ -26,9 +27,12 @@ function MainPage() {
       if (response.ok) {
        // const jwtToken = await response.text(); // Get the token from the response body
         const jwtToken = response.headers.get('Authorization');
+        const role = await response.text()
+        //alert(role);
         if (jwtToken) {
           console.log("Token received:", jwtToken);
           sessionStorage.setItem('jwt', jwtToken);
+          sessionStorage.setItem('role', role);
           setAuth(true);
         } else {
           console.log("Token not received");
