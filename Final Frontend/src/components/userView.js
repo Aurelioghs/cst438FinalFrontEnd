@@ -15,7 +15,11 @@ function UserView() {
   const [searchedWeather, setSearchWeather] = useState(null);
   const [citiesWeather, setCities] = useState(null);
   const initialTempUnit = localStorage.getItem('tempUnit') || 'F';
-  const [tempUnit, setUnit] = useState(initialTempUnit);
+  const [tempUnit, setTempUnit] = useState(initialTempUnit);
+
+  const initialSpeedUnit = localStorage.getItem('speedUnit') || 'M';
+  const [speedUnit, setSpeedUnit] = useState(initialSpeedUnit);
+
   const token = sessionStorage.getItem("jwt");
   const role =  sessionStorage.getItem("role");
   const [isDialogOpen, setDialogOpen] = useState(false);
@@ -53,8 +57,14 @@ function UserView() {
 
   const handleTemp = (tempUnit) => {
     alert(tempUnit);
-    setUnit(tempUnit);
+    setTempUnit(tempUnit);
     localStorage.setItem('tempUnit', tempUnit);
+  }
+
+  const handleSpeed = (speedUnit) => {
+    alert(speedUnit);
+    setSpeedUnit(speedUnit);
+    localStorage.setItem('speedUnit', speedUnit);
   }
 
   const handleCloseSearch = () => {
@@ -226,7 +236,7 @@ function UserView() {
       <h1>User View Weather</h1>
       <button onClick={handleOpenSettings}>Settings</button>
     </div>
-    {openSettings === true ? <Settings handleCloseSettings={handleCloseSettings}
+    {openSettings === true ? <Settings handleCloseSettings={handleCloseSettings} handleSpeed={handleSpeed}
                                         handleTemp={handleTemp}/> : <p></p>}
 
    
@@ -236,7 +246,8 @@ function UserView() {
     <h2>Weather At {userWeather.cityName}</h2>
     Temperature: {tempUnit==='C' ? `${userWeather.tempC}°C` : `${userWeather.tempF}°F`}<br></br>
     Description: {userWeather.desc}<br></br>
-    Wind Speed: {userWeather.windSpeed}<br></br>
+    Wind Speed: {speedUnit ==='M' ? `${userWeather.windSpeedMph}MPH`: `${userWeather.windSpeedKph}KPH` }
+    <br></br>
     <button id="moreinfoTable"  onClick={() => handlemoreInfoBtn(userWeather)}> More Info</button>
     {/* Display other current weather details here */}
     </section>) : (<p>Loading...</p> )}
@@ -255,7 +266,7 @@ function UserView() {
        <p> <h2>Weather At {searchedWeather.cityName}</h2><br></br>
         Temperature: {tempUnit==='C' ? `${searchedWeather.tempC}°C` : `${searchedWeather.tempF}°F`}<br></br>
         Description: {searchedWeather.desc}<br></br>
-        Wind Speed: {searchedWeather.windSpeed}<br></br>
+        Wind Speed: {speedUnit ==='M' ? `${searchedWeather.windSpeedMph}MPH`: `${searchedWeather.windSpeedKph}KPH` }<br></br>
         <button id="moreInfoSearch" onClick={() => handlemoreInfoBtn(searchedWeather)}style={{ marginRight: '10px' }}> More Info</button>
         <button id="closeSearch" onClick={handleCloseSearch}>Close Results</button>
        </p>) }
@@ -278,7 +289,7 @@ function UserView() {
             </DialogActions>
           </Dialog>      
 
-      {moreInfo === true && infoData !==null ? <MoreInfo data={infoData} tempUnit={tempUnit}
+      {moreInfo === true && infoData !==null ? <MoreInfo data={infoData} tempUnit={tempUnit} speedunit={speedUnit}
                                                 handleCloseInfoDisplay ={handleCloseInfoDisplay}/> : <p></p>}
 
         {citiesWeather !== null ? (
@@ -300,7 +311,7 @@ function UserView() {
               {tempUnit==='C' ? `${city.tempC}°C` : `${city.tempF}°F`}
             </td>
             <td>{city.desc}</td>
-            <td>{city.windSpeed}</td>
+            <td> Wind Speed: {speedUnit ==='M' ? `${city.windSpeedMph}MPH`: `${city.windSpeedKph}KPH` }</td>
             <td><button id="moreinfoTable"  onClick={() => handlemoreInfoBtn(city)}> More Info</button></td>  {/* Click to render new page/component for more info */}
           </tr>
         ))}

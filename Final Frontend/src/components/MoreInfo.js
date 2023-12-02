@@ -67,10 +67,10 @@ function MoreInfo(props){
           Feels Like: {data.feelsLikeC}°C / {data.feelsLikeF}°F <br></br>
           {props.data.desc}<br></br>
           Humidity: {data.humidity} Percent <br></br>
-          Wind Speed: {data.windSpeedMph} MPH /  {data.windSpeedKph} KPH<br></br>
+          Wind Speed: {props.data.windSpeedMph} MPH /  {props.data.windSpeedKph} KPH<br></br>
           SunriseTime: {data.sunriseTime}<br></br>
           SunsetTime: {data.sunsetTime}<br></br>
-          Visibility: {data.visibilityMiles} Miles / {props.data.visibilityKilometers} Kilometers<br></br>
+          Visibility: {data.visibilityMiles} Miles / {data.visibilityKiloM} Kilometers<br></br>
           Cloudiness: {data.cloudsPercent} Percent<br></br>
         </div>
       )}
