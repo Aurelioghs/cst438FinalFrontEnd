@@ -399,7 +399,7 @@ function getUserCities(){
       <button onClick={handleOpenSettings}>Settings</button>
     </div>
     {openSettings === true ? <Settings handleCloseSettings={handleCloseSettings} handleSpeed={handleSpeed}
-                                        handleTemp={handleTemp}/> : <p></p>}
+                                       getUserWeather={getUserWeather} handleTemp={handleTemp}/> : <p></p>}
 
    
       {/* Section for viewing current weather */}
