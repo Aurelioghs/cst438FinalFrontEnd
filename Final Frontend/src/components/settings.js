@@ -17,8 +17,8 @@ import TextField from '@mui/material/TextField';
     const role = sessionStorage.getItem("role");
     const [user, setUser] = useState({
       city: '',
-      statecode: '',
-      countrycode: ''
+      state_code: '',
+      country_code: ''
     });
     const [view, setView] = useState('prefs');
     const [users,setUsers] = useState(null);
@@ -42,7 +42,12 @@ import TextField from '@mui/material/TextField';
       })
       .then(data => {
         console.log("USER:", data);
-        setUser(data);
+        setUser({
+          city: data.city,
+          state_code: data.stateCode,
+          country_code: data.countryCode
+        });
+       console.log("USERSET:", user);
       })
       .catch(error => {
         console.error("Error fetching User", error);
@@ -101,25 +106,24 @@ import TextField from '@mui/material/TextField';
   }
 
   function updateUserAddr(){
-   // alert("GETTING USER");
-    fetch(`http://localhost:8080/`, {
-      method: 'GET',
+   alert("Updating User addr");
+   console.log(user);
+    fetch(`http://localhost:8080/address`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Authorization' : token
       },
+      body: JSON.stringify(user),
     })
       .then(response => {
         if (response.ok) {
+          
            return response.json();
         }
         else{
         throw new Error(`HTTP error! Status: ${response.status}`);
         }
-      })
-      .then(data => {
-        console.log("USER:", data);
-        setUser(data);
       })
       .catch(error => {
         console.error("Error updating User address", error);
@@ -170,6 +174,7 @@ import TextField from '@mui/material/TextField';
       updateUserAddr();
       props.handleTemp(tempUnit);
       props.handleSpeed(speedUnit);
+      props.getUserWeather();
       handleCloseDialog();
     };
 
@@ -235,11 +240,11 @@ import TextField from '@mui/material/TextField';
           </div>
           <div className="form-group">
             <label htmlFor="statecode">State Code</label>
-            <input type="text" id="statecode" name="stateCode" value={user.stateCode} onChange={onChange} />
+            <input type="text" id="state_code" name="state_code" value={user.state_code} onChange={onChange} />
           </div>
           <div className="form-group">
             <label htmlFor="countrycode">Country Code</label>
-            <input type="text" id="countrycode" name="countryCode" value={user.countryCode} onChange={onChange} />
+            <input type="text" id="country_code" name="country_code" value={user.country_code} onChange={onChange} />
           </div>
         </DialogContent>: 
         <DialogContent>
