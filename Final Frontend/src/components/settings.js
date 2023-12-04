@@ -14,12 +14,14 @@ import TextField from '@mui/material/TextField';
     const [tempUnit, setTempUnit] = useState(props.tempUnit);
     const [speedUnit, setSpeedUnit] = useState(props.speedUnit);
     const token = sessionStorage.getItem("jwt");
-    const role =  sessionStorage.getItem("role");
+    const role = sessionStorage.getItem("role");
     const [user, setUser] = useState({
       city: '',
       statecode: '',
       countrycode: ''
     });
+    const [view, setView] = useState('prefs');
+    const [users,setUsers] = useState(null);
   
   function getUser(){
     alert("GETTING USER");
@@ -44,6 +46,57 @@ import TextField from '@mui/material/TextField';
       })
       .catch(error => {
         console.error("Error fetching User", error);
+      });
+  }
+
+  function getUsers(){
+    alert("GETTING USERS");
+    fetch(`http://localhost:8080/getusers`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization' : token
+      },
+    })
+      .then(response => {
+        if (response.ok) {
+           return response.json();
+        }
+        else{
+        throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+      })
+      .then(data => {
+        console.log("USERS:", data);
+        setUsers(data);
+      })
+      .catch(error => {
+        console.error("Error fetching Users", error);
+      });
+  }
+
+  function deleteUser(user){
+    alert("Deleting");
+    console.log(user.id);
+   fetch(`http://localhost:8080/user/${user.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization' : token
+      },
+    })
+      .then(response => {
+        if (response.ok) {
+          getUsers();
+          alert("userDeleted");
+           return response.json();
+        }
+        else{
+        throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+      })
+      .catch(error => {
+        console.error("Error deleting User", error);
       });
   }
 
@@ -87,6 +140,31 @@ import TextField from '@mui/material/TextField';
     const handleSpeed= (speedUnit) => {
       setSpeedUnit(speedUnit);
     };
+
+    const handleUsersView = () => {
+      getUsers();
+      setView('users');
+    };
+
+    const handleDeleteUser = (user) => {
+      //alert("Deleting USER");
+   
+      const isConfirmed = window.confirm(`Are you sure you want to delete ${user.name}?`);
+
+      if (isConfirmed) {
+        console.log(`Deleting user: ${user.name}`);
+        deleteUser(user);
+       
+      } else {
+        console.log(`Deletion canceled for user: ${user.name}`);
+
+    }
+  }
+
+    const handlePrefsView = () => {
+      setView('prefs');
+    };
+  
   
     const handleUpdateSettings = () => {
       updateUserAddr();
@@ -103,6 +181,7 @@ import TextField from '@mui/material/TextField';
     return (
       <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
         <DialogTitle style={{ textAlign: 'center' }}>Settings</DialogTitle>
+        {view ==='prefs' ? 
         <DialogContent id="content">
           Choose Default Temperature To Display
           <label>
@@ -162,13 +241,37 @@ import TextField from '@mui/material/TextField';
             <label htmlFor="countrycode">Country Code</label>
             <input type="text" id="countrycode" name="countryCode" value={user.countryCode} onChange={onChange} />
           </div>
-         
-        </DialogContent>
+        </DialogContent>: 
+        <DialogContent>
+          {users === null ? <p>Loading Users...</p>: 
+           <table id="usersTable">
+           <thead>
+             <tr>
+               <th>ID</th>
+               <th>Name</th>
+               <th>Email</th>
+               <th>Action</th>
+             </tr>
+           </thead>
+           <tbody>
+             {users.map((user, idx) => (
+               <tr key={idx}>
+                 <td>{user.id}</td>
+                 <td>{user.name}</td>
+                 <td> {user.email}</td>
+                 <td><button id="deleteUserBtn"  onClick={() => handleDeleteUser(user)}> Delete User</button></td>  {/* Click to render new page/component for more info */}
+               </tr>
+             ))}
+           </tbody>
+         </table>}
+        </DialogContent>}
   
         <DialogActions>
           <Button color="secondary" onClick={handleCloseDialog}>
             Cancel
           </Button>
+           {(role ==="ADMIN" && view==='prefs')? <Button onClick={handleUsersView}>Delete Users</Button>:null}
+           {view === 'users' ? <Button onClick={handlePrefsView}>Back</Button>:null}
           <Button id="updateAddressBtn" color="secondary" onClick={handleUpdateSettings}>
             Update Settings
           </Button>
