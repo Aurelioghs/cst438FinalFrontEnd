@@ -100,13 +100,13 @@ function UserView() {
    };
 
   const handleTemp = (tempUnit) => {
-    alert(tempUnit);
+    //(tempUnit);
     setTempUnit(tempUnit);
     localStorage.setItem('tempUnit', tempUnit);
   }
 
   const handleSpeed = (speedUnit) => {
-    alert(speedUnit);
+    //alert(speedUnit);
     setSpeedUnit(speedUnit);
     localStorage.setItem('speedUnit', speedUnit);
   }
@@ -134,7 +134,7 @@ function UserView() {
   }
 
   function deleteUserCity(){
-    alert(cityToDelete);
+    //(cityToDelete);
     fetch(`http://localhost:8080/city/${cityToDelete}`, {
       method: 'DELETE',
       headers: {
@@ -159,7 +159,7 @@ function UserView() {
   }
 
   function deleteDefaultCity(){
-    alert(cityToDelete);
+    //alert(cityToDelete);
    fetch(`http://localhost:8080/default/${cityToDelete}`, {
       method: 'DELETE',
       headers: {
@@ -182,7 +182,7 @@ function UserView() {
       });
   }
 function getUserCities(){
-  alert("INSIDe USERCITIES");
+  //alert("INSIDe USERCITIES");
     // console.log("GETTING CITIES");
      fetch('http://localhost:8080/usercities', {
        method: 'GET',
@@ -212,7 +212,7 @@ function getUserCities(){
       }
 
       function getDefaultCities(){
-        alert("INSIDe DEFAULTCITIES");
+        //alert("INSIDe DEFAULTCITIES");
           // console.log("GETTING CITIES");
            fetch('http://localhost:8080/defaultcities', {
              method: 'GET',
@@ -285,7 +285,7 @@ function getUserCities(){
   }
 
   function getUserWeather(){
-    alert(role);
+    //alert(role);
    // console.log("INSIDE USERWEATHER");
     console.log("TOKEN: ",token);
     if (token!= null){

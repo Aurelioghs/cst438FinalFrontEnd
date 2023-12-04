@@ -24,7 +24,7 @@ import TextField from '@mui/material/TextField';
     const [users,setUsers] = useState(null);
   
   function getUser(){
-    alert("GETTING USER");
+    //alert("GETTING USER");
     fetch(`http://localhost:8080/getuser`, {
       method: 'GET',
       headers: {
@@ -55,7 +55,7 @@ import TextField from '@mui/material/TextField';
   }
 
   function getUsers(){
-    alert("GETTING USERS");
+    //alert("GETTING USERS");
     fetch(`http://localhost:8080/getusers`, {
       method: 'GET',
       headers: {
@@ -81,7 +81,7 @@ import TextField from '@mui/material/TextField';
   }
 
   function deleteUser(user){
-    alert("Deleting");
+    //alert("Deleting");
     console.log(user.id);
    fetch(`http://localhost:8080/user/${user.id}`, {
       method: 'DELETE',
@@ -93,7 +93,7 @@ import TextField from '@mui/material/TextField';
       .then(response => {
         if (response.ok) {
           getUsers();
-          alert("userDeleted");
+          //alert("userDeleted");
            return response.json();
         }
         else{
@@ -106,7 +106,7 @@ import TextField from '@mui/material/TextField';
   }
 
   function updateUserAddr(){
-   alert("Updating User addr");
+   //alert("Updating User addr");
    console.log(user);
     fetch(`http://localhost:8080/address`, {
       method: 'PUT',

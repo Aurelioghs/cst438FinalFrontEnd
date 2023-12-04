@@ -16,7 +16,7 @@ function MoreInfo(props){
    
 
     function getExtraData(){
-      alert("HERE");
+      //alert("HERE");
       // console.log("GETTING CITIES");
        fetch(`http://localhost:8080/getmoredata/${props.data.cityName}`, {
          method: 'GET',
