@@ -1,0 +1,40 @@
+
+.Center {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+  }
+  
+  .Center th,
+  .Center td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .Center th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .Center tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .Center tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .Center td button {
+    padding: 6px 10px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .Center td button:hover {
+    background-color: #c82333;
+  }
+  
