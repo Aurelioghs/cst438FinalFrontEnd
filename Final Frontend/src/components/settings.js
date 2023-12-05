@@ -169,7 +169,6 @@ import TextField from '@mui/material/TextField';
       setView('prefs');
     };
   
-  
     const handleUpdateSettings = () => {
       updateUserAddr();
       props.handleTemp(tempUnit);
