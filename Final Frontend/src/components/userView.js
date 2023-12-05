@@ -285,7 +285,7 @@ function getUserCities(){
   }
 
   function getUserWeather(){
-    //alert(role);
+   alert("Getting User Weather");
    // console.log("INSIDE USERWEATHER");
     console.log("TOKEN: ",token);
     if (token!= null){
@@ -394,10 +394,11 @@ function getUserCities(){
 
   return (
     <div className="main-page">
-    <div className="header-container">
-      <h1>User View Weather</h1>
-      <button onClick={handleOpenSettings}>Settings</button>
+      <div className="header-container">
+        <h1 id="MainH">Weather</h1>
+        <button onClick={handleOpenSettings} style={{ marginLeft: 'auto' }}>Settings</button>
     </div>
+
     {openSettings === true ? <Settings handleCloseSettings={handleCloseSettings} handleSpeed={handleSpeed}
                                        getUserWeather={getUserWeather} handleTemp={handleTemp}/> : <p></p>}
 
