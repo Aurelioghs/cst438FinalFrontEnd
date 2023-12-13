@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import MoreInfo from './MoreInfo';
-import Settings from './Settings';
+import Settings from './settings';
 
 function UserView() {
   const [userWeather, setUserWeather] = useState(null);
